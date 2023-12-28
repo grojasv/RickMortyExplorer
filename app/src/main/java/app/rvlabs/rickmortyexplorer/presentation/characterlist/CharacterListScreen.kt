@@ -34,30 +34,31 @@ fun CharacterListScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TopAppBar(title = { Text(text = stringResource(R.string.character_list_screen_title)) })
-
             if (state.isLoading) {
-                LoadingSection()
+                LinearProgressIndicator()
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.characters) { character ->
-                        CharacterItem(
-                            character = character,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onCharacterClicked(character.id) }
-                                .padding(16.dp)
-                        )
-                    }
-                }
+                ListSection(state = state, onCharacterClicked = onCharacterClicked)
             }
-
         }
     }
 }
 
 @Composable
-fun LoadingSection() {
-    LinearProgressIndicator()
+fun ListSection(
+    state: CharacterListViewModel.CharacterListState,
+    onCharacterClicked: (characterId: String) -> Unit
+) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(state.characters) { character ->
+            CharacterItem(
+                character = character,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onCharacterClicked(character.id) }
+                    .padding(16.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -67,7 +68,6 @@ fun CharacterItem(
 ) {
     Column(
         modifier = modifier,
-//        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = character.name, style = MaterialTheme.typography.titleLarge)
@@ -77,5 +77,3 @@ fun CharacterItem(
         Text(text = character.favorite.toString(), style = MaterialTheme.typography.bodyMedium)
     }
 }
-
-
