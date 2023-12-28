@@ -1,4 +1,4 @@
-package app.rvlabs.rickmortyexplorer.ui.theme
+package app.rvlabs.rickmortyexplorer.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

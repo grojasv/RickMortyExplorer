@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RickMortyExplorer</string>
+    <string name="character_list_screen_title"><![CDATA[Rick & Morty]]></string>
 </resources>

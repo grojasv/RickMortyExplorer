@@ -1,5 +1,6 @@
 query SingleCharacterQuery($character_id: ID!) {
     character(id: $character_id) {
+        id
         name
         gender
         origin {

@@ -1,4 +1,4 @@
-package app.rvlabs.rickmortyexplorer.ui.theme
+package app.rvlabs.rickmortyexplorer.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
