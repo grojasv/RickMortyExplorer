@@ -1,0 +1,12 @@
+query SingleCharacterQuery($character_id: ID!) {
+    character(id: $character_id) {
+        name
+        gender
+        origin {
+            name
+        }
+        image
+        status
+        species
+    }
+}

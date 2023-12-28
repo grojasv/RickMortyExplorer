@@ -1,0 +1,12 @@
+query CharactersQuery {
+    characters(page: 1) {
+        results {
+            name
+            gender
+            origin {
+                name
+            }
+            image
+        }
+    }
+}
