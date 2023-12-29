@@ -51,7 +51,7 @@ fun RickMortyApp() {
                     navController.navigate("${AppScreen.CharacterDetails.name}/$characterId")
                 },
                 onFilterActionClicked = {
-                    println("FilterActionClicked")
+                    viewModel.applyCharacterFiltering()
                 }
             )
         }

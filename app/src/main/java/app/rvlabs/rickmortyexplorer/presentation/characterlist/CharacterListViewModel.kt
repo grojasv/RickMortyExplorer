@@ -2,6 +2,11 @@ package app.rvlabs.rickmortyexplorer.presentation.characterlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_FEMALE
+import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_GENDERLESS
+import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_MALE
+import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_NONE
+import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_UNKNOWN
 import app.rvlabs.rickmortyexplorer.domain.model.CharacterOverviewModel
 import app.rvlabs.rickmortyexplorer.domain.usecase.GetCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +23,10 @@ class CharacterListViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(CharacterListState())
     val state = _state.asStateFlow()
+
+    private var currentFilterIndex = 0
+    private val filterOptions =
+        arrayOf(FILTER_NONE, FILTER_FEMALE, FILTER_MALE, FILTER_GENDERLESS, FILTER_UNKNOWN)
 
     init {
         loadCharacters()
@@ -36,8 +45,25 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
+    fun applyCharacterFiltering() {
+        currentFilterIndex++
+        if (currentFilterIndex >= filterOptions.size) {
+            currentFilterIndex = 0
+        }
+
+        val currentFilter = filterOptions[currentFilterIndex]
+
+        _state.update {
+            it.copy(
+                currentFilter = currentFilter,
+            )
+        }
+    }
+
     data class CharacterListState(
-        val characters: List<CharacterOverviewModel> = emptyList(), val isLoading: Boolean = false
+        val characters: List<CharacterOverviewModel> = emptyList(),
+        val isLoading: Boolean = false,
+        var currentFilter: String = FILTER_NONE
     )
 
 }
