@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,8 @@ fun CharacterListScreen(
                     IconButton(onClick = { onFilterActionClicked() }) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_filter_list_24),
-                            contentDescription = "Filter icon"
+                            contentDescription = "Filter icon",
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
                     }
                 },
@@ -69,7 +71,11 @@ fun CharacterListScreen(
             if (state.isLoading) {
                 LinearProgressIndicator()
             } else {
-                ListSection(state = state, onCharacterClicked = onCharacterClicked)
+                ListSection(
+                    state = state,
+                    onCharacterClicked = onCharacterClicked,
+                    onFilterActionClicked = onFilterActionClicked
+                )
             }
         }
     }
@@ -78,19 +84,21 @@ fun CharacterListScreen(
 @Composable
 fun ListSection(
     state: CharacterListViewModel.CharacterListState,
-    onCharacterClicked: (characterId: String) -> Unit
+    onCharacterClicked: (characterId: String) -> Unit,
+    onFilterActionClicked: () -> Unit
 ) {
     Column {
         if (!state.currentFilter.equals(GENDER_NONE, ignoreCase = true)) {
             Text(
                 text = stringResource(
-                    R.string.filtering_by_gender,
+                    R.string.filtering_header,
                     state.currentFilter.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
                 ),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable { onFilterActionClicked() }
                     .padding(16.dp)
             )
         }

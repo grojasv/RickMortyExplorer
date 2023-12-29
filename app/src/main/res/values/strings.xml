@@ -3,5 +3,5 @@
     <string name="character_list_screen_title"><![CDATA[Rick & Morty]]></string>
     <string name="mark_favorite">Add to favorites</string>
     <string name="unmark_favorite">Remove from favorites</string>
-    <string name="filtering_by_gender">Filtering by Gender = %1$s</string>
+    <string name="filtering_header">Filtered by %1$s characters</string>
 </resources>
