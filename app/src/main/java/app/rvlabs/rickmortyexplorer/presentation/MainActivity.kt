@@ -49,6 +49,9 @@ fun RickMortyApp() {
                 state = state,
                 onCharacterClicked = { characterId ->
                     navController.navigate("${AppScreen.CharacterDetails.name}/$characterId")
+                },
+                onFilterActionClicked = {
+                    println("FilterActionClicked")
                 }
             )
         }
@@ -70,7 +73,8 @@ fun RickMortyApp() {
                 state = state,
                 onFavoriteClicked = {
                     println("Favorite $it")
-                }
+                },
+                onBackArrowClicked = { navController.popBackStack() }
             )
         }
     }
