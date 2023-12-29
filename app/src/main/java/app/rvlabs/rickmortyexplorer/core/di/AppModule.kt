@@ -4,6 +4,7 @@ import app.rvlabs.rickmortyexplorer.core.Constants.REMOTE_URL
 import app.rvlabs.rickmortyexplorer.data.remote.RemoteDataSource
 import app.rvlabs.rickmortyexplorer.domain.RickMortyRepository
 import app.rvlabs.rickmortyexplorer.domain.usecase.GetCharacterDetailsUseCase
+import app.rvlabs.rickmortyexplorer.domain.usecase.GetCharactersFilteredByGenderUseCase
 import app.rvlabs.rickmortyexplorer.domain.usecase.GetCharactersUseCase
 import com.apollographql.apollo3.ApolloClient
 import dagger.Module
@@ -34,6 +35,12 @@ object AppModule {
     @Singleton
     fun provideGetCharactersUseCase(rickMortyRepository: RickMortyRepository): GetCharactersUseCase {
         return GetCharactersUseCase(rickMortyRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCharactersFilteredByGenderUseCase(rickMortyRepository: RickMortyRepository): GetCharactersFilteredByGenderUseCase {
+        return GetCharactersFilteredByGenderUseCase(rickMortyRepository)
     }
 
     @Provides

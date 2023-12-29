@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.rvlabs.rickmortyexplorer.R
-import app.rvlabs.rickmortyexplorer.core.Constants.FILTER_NONE
+import app.rvlabs.rickmortyexplorer.core.Constants.GENDER_NONE
 import app.rvlabs.rickmortyexplorer.domain.model.CharacterOverviewModel
 import app.rvlabs.rickmortyexplorer.presentation.ui.common.CharacterNameTitle
 import coil.compose.AsyncImage
@@ -81,7 +81,7 @@ fun ListSection(
     onCharacterClicked: (characterId: String) -> Unit
 ) {
     Column {
-        if (!state.currentFilter.equals(FILTER_NONE, ignoreCase = true)) {
+        if (!state.currentFilter.equals(GENDER_NONE, ignoreCase = true)) {
             Text(
                 text = stringResource(
                     R.string.filtering_by_gender,
@@ -134,7 +134,7 @@ fun CharacterItem(
                 CharacterNameTitle(text = character.name)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${character.gender} · ${character.origin}",
+                    text = "${character.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} · ${character.origin}",
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
