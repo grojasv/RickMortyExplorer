@@ -39,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -149,7 +148,7 @@ fun FavoriteToggleButton(
     isFavorite: Boolean, onFavoriteToggleClicked: () -> Unit, modifier: Modifier = Modifier
 ) {
     if (isFavorite) {
-        Divider(color = Color.White, thickness = 2.dp)
+        Divider(color = MaterialTheme.colorScheme.onPrimary, thickness = 2.dp)
         Spacer(modifier = Modifier.height(16.dp))
         TextIconComponent(
             text = "This is one of your favorite characters", imageVector = Icons.Default.Star
