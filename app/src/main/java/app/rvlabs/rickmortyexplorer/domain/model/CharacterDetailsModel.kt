@@ -9,6 +9,5 @@ data class CharacterDetailsModel(
     val origin: String = "",
     val image: String = "",
     val status: String = "",
-    val species: String = "",
-    val favorite: Boolean = false
+    val species: String = ""
 )

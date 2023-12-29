@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.rvlabs.rickmortyexplorer.domain.model.CharacterDetailsModel
 import app.rvlabs.rickmortyexplorer.domain.usecase.GetCharacterDetailsUseCase
+import app.rvlabs.rickmortyexplorer.domain.usecase.IsFavoriteCharacterSavedUseCase
+import app.rvlabs.rickmortyexplorer.domain.usecase.RemoveFavoriteCharacterUseCase
+import app.rvlabs.rickmortyexplorer.domain.usecase.SetFavoriteCharacterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
-    private val getCharacterDetailsUseCase: GetCharacterDetailsUseCase
+    private val getCharacterDetailsUseCase: GetCharacterDetailsUseCase,
+    private val setFavoriteCharacterUseCase: SetFavoriteCharacterUseCase,
+    private val removeFavoriteCharacterUseCase: RemoveFavoriteCharacterUseCase,
+    private val isFavoriteCharacterSavedUseCase: IsFavoriteCharacterSavedUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CharacterDetailsState())
@@ -21,15 +27,38 @@ class CharacterDetailsViewModel @Inject constructor(
 
     fun loadCharacter(characterId: String) {
         viewModelScope.launch {
+            val character = getCharacterDetailsUseCase.execute(characterId = characterId)
+            val isFavoriteCharacterSaved =
+                isFavoriteCharacterSavedUseCase.execute(characterId = characterId)
+
             _state.update {
                 it.copy(
-                    character = getCharacterDetailsUseCase.execute(id = characterId),
+                    character = character,
+                    isFavorite = isFavoriteCharacterSaved
                 )
+            }
+        }
+    }
+
+    fun favoriteToggleClicked() {
+        val newFavoriteValue = _state.value.isFavorite.not()
+
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isFavorite = newFavoriteValue
+                )
+            }
+            if (newFavoriteValue) {
+                setFavoriteCharacterUseCase.execute(state.value.character.id)
+            } else {
+                removeFavoriteCharacterUseCase.execute(state.value.character.id)
             }
         }
     }
 
     data class CharacterDetailsState(
         val character: CharacterDetailsModel = CharacterDetailsModel(),
+        val isFavorite: Boolean = false
     )
 }

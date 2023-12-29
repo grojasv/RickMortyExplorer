@@ -4,6 +4,7 @@ object Constants {
 
     const val REMOTE_URL = "https://rickandmortyapi.com/graphql"
     const val PARAM_CHARACTER_ID = "characterId"
+    const val DB_NAME = "rickmortyexplorer.db"
 
     const val GENDER_NONE = "none"
     const val GENDER_FEMALE = "female"
