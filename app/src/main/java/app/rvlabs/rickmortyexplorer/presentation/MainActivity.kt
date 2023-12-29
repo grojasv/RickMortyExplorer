@@ -71,8 +71,8 @@ fun RickMortyApp() {
 
             CharacterDetailsScreen(
                 state = state,
-                onFavoriteClicked = {
-                    println("Favorite $it")
+                onFavoriteToggleClicked = {
+                    viewModel.favoriteToggleClicked()
                 },
                 onBackArrowClicked = { navController.popBackStack() }
             )

@@ -22,7 +22,9 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,9 +54,8 @@ import coil.compose.AsyncImage
 @Composable
 fun CharacterDetailsScreen(
     state: CharacterDetailsViewModel.CharacterDetailsState,
-    onFavoriteClicked: (characterId: String) -> Unit,
+    onFavoriteToggleClicked: () -> Unit,
     onBackArrowClicked: () -> Unit
-
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
@@ -71,14 +73,20 @@ fun CharacterDetailsScreen(
                 title = { Text(text = state.character.name) },
                 modifier = Modifier.shadow(elevation = 5.dp)
             )
-            DetailsSection(character = state.character, onFavoriteClicked = onFavoriteClicked)
+            DetailsSection(
+                character = state.character,
+                isFavorite = state.isFavorite,
+                onFavoriteToggleClicked = onFavoriteToggleClicked
+            )
         }
     }
 }
 
 @Composable
 fun DetailsSection(
-    character: CharacterDetailsModel, onFavoriteClicked: (characterId: String) -> Unit
+    character: CharacterDetailsModel,
+    isFavorite: Boolean = false,
+    onFavoriteToggleClicked: () -> Unit
 ) {
     Box(
         modifier = Modifier.padding(
@@ -115,24 +123,12 @@ fun DetailsSection(
                         text = character.status, imageVector = Icons.Default.CheckCircle
                     )
                 }
-                Spacer(modifier = Modifier.height(24.dp))
-                Box(
-                    contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxWidth()
-                ) {
-                    ElevatedButton(modifier = Modifier.padding(vertical = 2.dp, horizontal = 12.dp),
-                        onClick = { onFavoriteClicked(character.id) }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.img_favorite),
-                            contentDescription = "Favorite",
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            fontWeight = FontWeight.Bold,
-                            text = stringResource(R.string.mark_favorite).uppercase()
-                        )
-                    }
-                }
+                Spacer(modifier = Modifier.height(16.dp))
+                FavoriteToggleButton(
+                    isFavorite = isFavorite,
+                    onFavoriteToggleClicked = onFavoriteToggleClicked,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
         AsyncImage(
@@ -145,5 +141,60 @@ fun DetailsSection(
                 .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 .align(alignment = Alignment.TopCenter)
         )
+    }
+}
+
+@Composable
+fun FavoriteToggleButton(
+    isFavorite: Boolean, onFavoriteToggleClicked: () -> Unit, modifier: Modifier = Modifier
+) {
+    if (isFavorite) {
+        Divider(color = Color.White, thickness = 2.dp)
+        Spacer(modifier = Modifier.height(16.dp))
+        TextIconComponent(
+            text = "This is one of your favorite characters", imageVector = Icons.Default.Star
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Box(
+            contentAlignment = Alignment.BottomStart, modifier = modifier
+        ) {
+            ElevatedButton(
+                modifier = Modifier.padding(8.dp),
+                onClick = {
+                    onFavoriteToggleClicked()
+                }) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_not_favorite),
+                    contentDescription = "Not favorite",
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.unmark_favorite).uppercase()
+                )
+            }
+        }
+    } else {
+        Box(
+            contentAlignment = Alignment.BottomEnd, modifier = modifier
+        ) {
+            ElevatedButton(
+                modifier = Modifier.padding(8.dp),
+                onClick = {
+                    onFavoriteToggleClicked()
+                }) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_favorite),
+                    contentDescription = "Favorite",
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    fontWeight = FontWeight.Bold,
+                    text = stringResource(R.string.mark_favorite).uppercase()
+                )
+            }
+        }
     }
 }

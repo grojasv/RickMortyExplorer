@@ -7,7 +7,7 @@ class GetCharacterDetailsUseCase(
     private val repository: RickMortyRepository
 ) {
 
-    suspend fun execute(id: String): CharacterDetailsModel {
-        return repository.getCharacterDetails(id)
+    suspend fun execute(characterId: String): CharacterDetailsModel {
+        return repository.getCharacterDetails(characterId)
     }
 }
