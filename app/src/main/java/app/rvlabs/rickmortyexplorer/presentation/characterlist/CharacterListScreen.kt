@@ -31,9 +31,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.rvlabs.rickmortyexplorer.R
+import app.rvlabs.rickmortyexplorer.core.Constants.GENDER_NONE
 import app.rvlabs.rickmortyexplorer.domain.model.CharacterOverviewModel
 import app.rvlabs.rickmortyexplorer.presentation.ui.common.CharacterNameTitle
 import coil.compose.AsyncImage
@@ -78,14 +80,30 @@ fun ListSection(
     state: CharacterListViewModel.CharacterListState,
     onCharacterClicked: (characterId: String) -> Unit
 ) {
-    LazyColumn {
-        items(state.characters) { character ->
-            CharacterItem(character = character,
+    Column {
+        if (!state.currentFilter.equals(GENDER_NONE, ignoreCase = true)) {
+            Text(
+                text = stringResource(
+                    R.string.filtering_by_gender,
+                    state.currentFilter.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+                ),
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
-                    .shadow(8.dp, RoundedCornerShape(8.dp))
-                    .clickable { onCharacterClicked(character.id) })
+                    .padding(16.dp)
+            )
+        }
+
+        LazyColumn {
+            items(state.characters) { character ->
+                CharacterItem(character = character,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .shadow(8.dp, RoundedCornerShape(8.dp))
+                        .clickable { onCharacterClicked(character.id) })
+            }
         }
     }
 }
@@ -116,7 +134,7 @@ fun CharacterItem(
                 CharacterNameTitle(text = character.name)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${character.gender} · ${character.origin}",
+                    text = "${character.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }} · ${character.origin}",
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

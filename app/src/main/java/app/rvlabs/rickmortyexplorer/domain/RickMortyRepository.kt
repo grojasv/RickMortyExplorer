@@ -6,6 +6,6 @@ import app.rvlabs.rickmortyexplorer.domain.model.CharacterOverviewModel
 interface RickMortyRepository {
 
     suspend fun getCharacters(): List<CharacterOverviewModel>
-
+    suspend fun getCharactersFilteredByGender(gender: String): List<CharacterOverviewModel>
     suspend fun getCharacterDetails(id: String): CharacterDetailsModel
 }

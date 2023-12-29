@@ -1,0 +1,13 @@
+query CharactersFilteredByGenderQuery($gender: String!) {
+    characters(page: 1, filter: {gender: $gender}) {
+        results {
+            id
+            name
+            gender
+            origin {
+                name
+            }
+            image
+        }
+    }
+}

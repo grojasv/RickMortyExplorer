@@ -106,7 +106,10 @@ fun DetailsSection(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextIconComponent(text = character.gender, imageVector = Icons.Default.Person)
+                    TextIconComponent(
+                        text = character.gender.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
+                        imageVector = Icons.Default.Person
+                    )
                     TextIconComponent(text = character.species, imageVector = Icons.Default.Face)
                     TextIconComponent(
                         text = character.status, imageVector = Icons.Default.CheckCircle
