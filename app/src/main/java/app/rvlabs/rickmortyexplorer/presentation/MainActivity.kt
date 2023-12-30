@@ -41,18 +41,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun RickMortyApp() {
     val navController = rememberNavController()
+    val characterListViewModel = hiltViewModel<CharacterListViewModel>()
+    val characterDetailsViewModel = hiltViewModel<CharacterDetailsViewModel>()
 
     NavHost(navController = navController, startDestination = SCREEN_CHARACTER_LIST) {
         composable(route = SCREEN_CHARACTER_LIST) {
-            val viewModel = hiltViewModel<CharacterListViewModel>()
-            val state by viewModel.state.collectAsState()
+            val state by characterListViewModel.state.collectAsState()
             CharacterListScreen(
                 state = state,
                 onCharacterClicked = { characterId ->
                     navController.navigate("${SCREEN_CHARACTER_DETAILS}/$characterId")
                 },
                 onFilterActionClicked = {
-                    viewModel.applyCharacterFiltering()
+                    characterListViewModel.applyNextFilter()
                 }
             )
         }
@@ -69,18 +70,20 @@ fun RickMortyApp() {
                 }
             )
         ) {
-            val viewModel = hiltViewModel<CharacterDetailsViewModel>()
-            val state by viewModel.state.collectAsState()
+            val state by characterDetailsViewModel.state.collectAsState()
             val characterId = remember { it.arguments?.getString(PARAM_CHARACTER_ID) ?: "" }
 
-            viewModel.loadCharacter(characterId)
+            characterDetailsViewModel.loadCharacter(characterId)
 
             CharacterDetailsScreen(
                 state = state,
                 onFavoriteToggleClicked = {
-                    viewModel.favoriteToggleClicked()
+                    characterDetailsViewModel.favoriteToggleClicked()
                 },
-                onBackArrowClicked = { navController.popBackStack() }
+                onBackArrowClicked = {
+                    navController.popBackStack()
+                    characterListViewModel.refreshCharacters()
+                }
             )
         }
     }
