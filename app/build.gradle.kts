@@ -97,6 +97,10 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     //noinspection KaptUsageInsteadOfKsp
     kapt("androidx.room:room-compiler:$roomVersion")
+
+    // Mockito testing
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0-RC2")
 }
 
 kapt {
