@@ -31,10 +31,19 @@ class CharacterListViewModel @Inject constructor(
         arrayOf(GENDER_NONE, GENDER_FEMALE, GENDER_MALE, GENDER_GENDERLESS, GENDER_UNKNOWN)
 
     init {
-        loadCharacters()
+        refreshCharacters()
     }
 
-    private fun loadCharacters() {
+    fun refreshCharacters() {
+        val currentGenderFilter = filterOptions[currentFilterIndex]
+        if (currentGenderFilter.equals(GENDER_NONE, ignoreCase = true)) {
+            loadCharactersWithoutFilter()
+        } else {
+            loadCharactersFilteredByGender(currentGenderFilter)
+        }
+    }
+
+    private fun loadCharactersWithoutFilter() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
@@ -66,18 +75,13 @@ class CharacterListViewModel @Inject constructor(
         }
     }
 
-    fun applyCharacterFiltering() {
+    fun applyNextFilter() {
         currentFilterIndex++
         if (currentFilterIndex >= filterOptions.size) {
             currentFilterIndex = 0
         }
 
-        val currentGenderFilter = filterOptions[currentFilterIndex]
-        if (currentGenderFilter.equals(GENDER_NONE, ignoreCase = true)) {
-            loadCharacters()
-        } else {
-            loadCharactersFilteredByGender(currentGenderFilter)
-        }
+        refreshCharacters()
     }
 
     data class CharacterListState(
