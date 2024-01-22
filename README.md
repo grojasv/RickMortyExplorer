@@ -1,4 +1,4 @@
-# APP: Rick & Morty Explorer
+# Android APP - Rick & Morty Explorer
 ## Summary 📋
 This is a simple Rick and Morty APP using the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql)
 
