@@ -1,8 +1,6 @@
 # Android APP - Rick & Morty Explorer
 ## Summary 📋
-This is a simple Rick and Morty APP using the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql)
-
-<img src="https://github.com/grojasv/RickMortyExplorer/blob/master/assets/app_showcase_splashscreen.png" alt="splashscreen-image" width="150"/> 
+This is a simple Android APP about the Rick and Morty characters using the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql)
 
 ## Dark theme showcase 🌝
 ![](https://github.com/grojasv/GitHubRepoViewerPrivate/blob/master/app_showcase_dark_theme.gif)
